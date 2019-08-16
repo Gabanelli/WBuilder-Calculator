@@ -57,6 +57,7 @@ public class Menu extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Calc");
 		
 		txtRelative = new JTextField();
 		txtRelative.setEditable(false);
