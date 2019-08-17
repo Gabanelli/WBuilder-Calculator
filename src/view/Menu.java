@@ -246,8 +246,9 @@ public class Menu extends JFrame {
 	public static void operatorController(String opType) {
 		try {
 			number1 = Integer.parseInt(txtDisplay.getText());
-			relativeCalc = relativeCalc + txtDisplay.getText();
 			txtOperation.setText(opType);
+			relativeCalc = relativeCalc + number1;
+			txtRelative.setText(relativeCalc);
 		}catch(NumberFormatException ex){
 			txtOperation.setText(opType);
 		}finally {
