@@ -5,28 +5,27 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
-import javax.swing.SwingConstants;
 
-import javax.swing.JOptionPane;
+import controller.ClearController;
+import controller.EqualsController;
+import controller.NumberController;
+import controller.OperationController;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.GridLayout;
+
 import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class Menu extends JFrame {
-	
-	private static int number1 = 0;
-	private static String relativeCalc = "";
-	private static String operator = "";
 
 	private JPanel contentPane;
-	private static JTextField txtDisplay;
-	private static JTextField txtOperation;
-	private static JTextField txtRelative;
+	private JTextField txtDisplay;
+	private JTextField txtRelative;
+	private JButton[] numberButtons = {new JButton("1"), new JButton("2"), new JButton("3"), new JButton("4"), 
+			new JButton("5"), new JButton("6"), new JButton("7"), new JButton("8"), new JButton("9"), new JButton("0"), };
+	private JButton[] operationButtons = {new JButton("+"), new JButton("-"), new JButton("*"), new JButton("/")};
 
 	/**
 	 * Launch the application.
@@ -69,225 +68,51 @@ public class Menu extends JFrame {
 		txtDisplay = new JTextField();
 		txtDisplay.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		txtDisplay.setEditable(false);
-		txtDisplay.setBounds(5, 23, 127, 23);
+		txtDisplay.setBounds(5, 23, 153, 23);
 		contentPane.add(txtDisplay);
 		txtDisplay.setColumns(10);
-		
-		txtOperation = new JTextField();
-		txtOperation.setEditable(false);
-		txtOperation.setHorizontalAlignment(SwingConstants.CENTER);
-		txtOperation.setBounds(134, 23, 24, 23);
-		contentPane.add(txtOperation);
-		txtOperation.setColumns(10);
+		txtDisplay.setText("0");
 		
 		JPanel ctnNumbers = new JPanel();
 		ctnNumbers.setBounds(5, 58, 153, 114);
 		contentPane.add(ctnNumbers);
 		ctnNumbers.setLayout(new GridLayout(0, 3, 0, 0));
 		
-		JButton btn1 = new JButton("1");
-		btn1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "1");
+		for(int i = 7; i > 0 ; i++) {
+			this.numberButtons[i] = new JButton(Integer.toString(i));
+			ctnNumbers.add(this.numberButtons[i]);
+			NumberController number = new NumberController(i, txtDisplay);
+			numberButtons[i].addActionListener(number);
+			if(i%3 == 0) {
+				i = i - 6;
 			}
-		});
-		ctnNumbers.add(btn1);
+		}
 		
-		JButton btn2 = new JButton("2");
-		btn2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "2");
-			}
-		});
-		ctnNumbers.add(btn2);
+		JButton btnClear = new JButton("C");
+		ctnNumbers.add(btnClear);
+		ClearController clear = new ClearController(txtDisplay, txtRelative);
+		btnClear.addActionListener(clear);
 		
-		JButton btn3 = new JButton("3");
-		btn3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "3");
-			}
-		});
-		ctnNumbers.add(btn3);
-		
-		JButton btn4 = new JButton("4");
-		btn4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "4");
-			}
-		});
-		ctnNumbers.add(btn4);
-		
-		JButton btn5 = new JButton("5");
-		btn5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "5");
-			}
-		});
-		ctnNumbers.add(btn5);
-		
-		JButton btn6 = new JButton("6");
-		btn6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "6");
-			}
-		});
-		ctnNumbers.add(btn6);
-		
-		JButton btn7 = new JButton("7");
-		btn7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "7");
-			}
-		});
-		ctnNumbers.add(btn7);
-		
-		JButton btn8 = new JButton("8");
-		btn8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "8");
-			}
-		});
-		ctnNumbers.add(btn8);
-		
-		JButton btn9 = new JButton("9");
-		btn9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "9");
-			}
-		});
-		ctnNumbers.add(btn9);
-		
-		JButton btnC = new JButton("C");
-		btnC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				txtDisplay.setText("");
-				txtOperation.setText("");
-				txtRelative.setText("");
-				relativeCalc = "";
-				number1 = 0;
-			}
-		});
-		ctnNumbers.add(btnC);
-		
-		JButton btn0 = new JButton("0");
-		btn0.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String text = txtDisplay.getText();
-				txtDisplay.setText(text + "0");
-			}
-		});
-		ctnNumbers.add(btn0);
+		this.numberButtons[0] = new JButton("0");
+		ctnNumbers.add(this.numberButtons[0]);
+		NumberController number = new NumberController(0, txtDisplay);
+		numberButtons[0].addActionListener(number);
 		
 		JButton btnEquals = new JButton("=");
-		btnEquals.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				equalsController();
-			}
-		});
 		ctnNumbers.add(btnEquals);
+		EqualsController equals = new EqualsController(txtDisplay, txtRelative);
+		btnEquals.addActionListener(equals);
 		
 		JPanel ctnOperations = new JPanel();
 		ctnOperations.setBounds(5, 187, 153, 67);
 		contentPane.add(ctnOperations);
-		ctnOperations.setLayout(new GridLayout(0, 3, 0, 0));
+		ctnOperations.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JButton btnPlus = new JButton("+");
-		btnPlus.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operatorController("+");
-			}
-		});
-		ctnOperations.add(btnPlus);
-		
-		JButton btnMinus = new JButton("-");
-		btnMinus.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operatorController("-");
-			}
-		});
-		ctnOperations.add(btnMinus);
-		
-		JButton btnTimes = new JButton("*");
-		btnTimes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operatorController("*");
-			}
-		});
-		ctnOperations.add(btnTimes);
-		
-		JLabel label = new JLabel("");
-		ctnOperations.add(label);
-		
-		JButton btnDivide = new JButton("/");
-		btnDivide.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				operatorController("/");
-			}
-		});
-		ctnOperations.add(btnDivide);
-		
-		JLabel label_1 = new JLabel("");
-		ctnOperations.add(label_1);
-		
-	}
-	
-	/**
-	 * Control the operations
-	 */
-	public static void operatorController(String opType) {
-		try {
-			number1 = Integer.parseInt(txtDisplay.getText());
-			txtOperation.setText(opType);
-			relativeCalc = relativeCalc + number1;
-			txtRelative.setText(relativeCalc);
-		}catch(NumberFormatException ex){
-			txtOperation.setText(opType);
-		}finally {
-			operator = opType;
-			txtDisplay.setText("");
+		for(JButton btn : operationButtons) {
+			ctnOperations.add(btn);
+			OperationController control = new OperationController(txtDisplay, txtRelative, btn.getText());
+			btn.addActionListener(control);
 		}
-	}
-	
-	/**
-	 * Control the equals function
-	 */
-	public static void equalsController() {
-		try {
-			int number2 = Integer.parseInt(txtDisplay.getText());
-			int result = 0;
-			switch(txtOperation.getText()) {
-			case "+":
-				result = number1 + number2;
-				break;
-			case "-":
-				result = number1 - number2;
-				break;
-			case "*":
-				result = number1 * number2;
-				break;
-			case "/":
-				result = number1 / number2;
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Select a operator");
-				break;
-			}
-			txtDisplay.setText(Integer.toString(result));
-			relativeCalc = relativeCalc + operator + number2;
-			txtRelative.setText(relativeCalc);
-			relativeCalc = relativeCalc + "=";
-			txtOperation.setText("");
-		}catch(NumberFormatException ex) {
-			JOptionPane.showMessageDialog(null, "Insert a number");
-		}
+		
 	}
 }
